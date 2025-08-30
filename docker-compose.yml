@@ -32,6 +32,8 @@ services:
     volumes:
       - ./open-webui-data:/app/backend/data
       - ./custom:/app/custom
+      - ./assets/logos:/app/static/logos
+      - ./custom/frontend:/app/static/custom
     environment:
       - ENABLE_SIGNUP=true
       - DEFAULT_MODELS=llama3.2:1b,llama3.1:8b,codellama:13b
@@ -39,6 +41,13 @@ services:
       - WEBUI_NAME=Sweek-AI
       - WEBUI_URL=http://localhost:3000
       - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-sweek-ai-secret-key-change-in-production}
+      # White-label branding
+      - DEFAULT_USER_THEME=dark
+      - WEBUI_DEFAULT_THEME=dark
+      - WEBUI_DESCRIPTION=Chat with Character - AI Conversations with Personality
+      - WEBUI_LOGO_URL=/static/logos/sweek-ai-logo.svg
+      - WEBUI_LOGO_DARK_URL=/static/logos/sweek-ai-logo-dark.svg
+      - WEBUI_FAVICON_URL=/static/logos/favicon.ico
       - ENABLE_COMMUNITY_SHARING=false
       - ENABLE_MODEL_FILTER=true
       - MODEL_FILTER_LIST=llama3.2:1b,llama3.1:8b,codellama:13b

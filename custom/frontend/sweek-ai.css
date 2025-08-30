@@ -1,0 +1,65 @@
+/* Sweek-AI Custom Branding CSS */
+:root {
+  --sweek-primary: #6366F1;
+  --sweek-secondary: #8B5CF6;
+  --sweek-accent: #EC4899;
+  --sweek-gradient: linear-gradient(135deg, #6366F1 0%, #8B5CF6 50%, #EC4899 100%);
+}
+
+/* Force dark mode styling */
+html[class*="dark"] {
+  color-scheme: dark;
+}
+
+/* Custom logo implementation */
+.app-logo img,
+img[src*="logo.svg"],
+img[alt*="Open WebUI"] {
+  visibility: hidden;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.app-logo::before,
+.navbar-brand::before {
+  content: "";
+  display: inline-block;
+  width: 150px;
+  height: 40px;
+  background: url('/static/logos/sweek-ai-logo-dark.svg') no-repeat center;
+  background-size: contain;
+}
+
+/* Light mode logo */
+html:not(.dark) .app-logo::before,
+html:not(.dark) .navbar-brand::before {
+  background-image: url('/static/logos/sweek-ai-logo.svg');
+}
+
+/* Loading screen */
+.loading-screen {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%) !important;
+}
+
+/* Character avatars with gradient border */
+.character-avatar {
+  border: 2px solid transparent;
+  background: linear-gradient(white, white) padding-box,
+              var(--sweek-gradient) border-box;
+  border-radius: 50%;
+}
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar {
+  width: 8px;
+  background: #1F2937;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #4B5563;
+  border-radius: 4px;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #6B7280;
+}
