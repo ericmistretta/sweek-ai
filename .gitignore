@@ -45,8 +45,15 @@ venv/
 env/
 ENV/
 
-# Docker
+# Docker volumes and data
 open-webui-data/
+postgres_data/
+redis_data/
+ollama_data/
+*.db
+*.sqlite
+
+# Docker
 
 # Logs
 logs/
@@ -54,3 +61,9 @@ logs/
 
 # OS
 Thumbs.db
+
+# Initialization markers
+.initialized
+
+# Backup files
+backups/

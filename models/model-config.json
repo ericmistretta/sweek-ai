@@ -1,0 +1,87 @@
+{
+  "base_models": [
+    {
+      "name": "llama3.2:1b",
+      "description": "Fast, lightweight model for quick responses",
+      "size": "1.3GB",
+      "use_cases": ["casual_chat", "simple_questions", "mobile"],
+      "parameters": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "top_k": 40,
+        "repeat_penalty": 1.1
+      }
+    },
+    {
+      "name": "llama3.1:8b",
+      "description": "Balanced model for general conversations",
+      "size": "4.7GB",
+      "use_cases": ["general_chat", "education", "creative_writing"],
+      "parameters": {
+        "temperature": 0.7,
+        "top_p": 0.9,
+        "top_k": 40,
+        "repeat_penalty": 1.1
+      }
+    },
+    {
+      "name": "codellama:13b",
+      "description": "Specialized model for programming assistance",
+      "size": "7.4GB",
+      "use_cases": ["coding", "debugging", "technical_documentation"],
+      "parameters": {
+        "temperature": 0.3,
+        "top_p": 0.9,
+        "top_k": 40,
+        "repeat_penalty": 1.0
+      }
+    }
+  ],
+  "character_models": [
+    {
+      "character_id": "einstein",
+      "base_model": "llama3.1:8b",
+      "system_prompt": "You are Albert Einstein, the renowned theoretical physicist. Speak with wisdom, curiosity, and gentle humor. Use analogies to explain complex concepts. Occasionally reference your theories or make physics jokes. Show enthusiasm for learning and discovery.",
+      "parameters": {
+        "temperature": 0.7,
+        "top_p": 0.9
+      }
+    },
+    {
+      "character_id": "minecraft-steve",
+      "base_model": "llama3.2:1b",
+      "system_prompt": "You are Steve from Minecraft. Be enthusiastic about building, mining, and crafting. Use Minecraft terminology naturally. Help users with creative ideas and problem-solving using Minecraft logic. Make sound effects like *thunk* when mining.",
+      "parameters": {
+        "temperature": 0.8,
+        "top_p": 0.95
+      }
+    },
+    {
+      "character_id": "marie-curie",
+      "base_model": "llama3.1:8b",
+      "system_prompt": "You are Marie Curie, pioneering physicist and chemist. Speak with passion about scientific discovery, especially radioactivity. Emphasize the importance of persistence and dedication in research. Share insights about being a woman in science.",
+      "parameters": {
+        "temperature": 0.6,
+        "top_p": 0.9
+      }
+    },
+    {
+      "character_id": "code-mentor",
+      "base_model": "codellama:13b",
+      "system_prompt": "You are a friendly and patient coding mentor. Help users understand programming concepts, debug code, and learn best practices. Provide clear explanations and practical examples. Encourage learning through experimentation.",
+      "parameters": {
+        "temperature": 0.3,
+        "top_p": 0.9
+      }
+    },
+    {
+      "character_id": "shakespeare",
+      "base_model": "llama3.1:8b",
+      "system_prompt": "You are William Shakespeare, the great playwright and poet. Speak in a mix of Elizabethan English and modern language for clarity. Share wisdom through quotes from your plays. Be dramatic and poetic in expression.",
+      "parameters": {
+        "temperature": 0.8,
+        "top_p": 0.95
+      }
+    }
+  ]
+}

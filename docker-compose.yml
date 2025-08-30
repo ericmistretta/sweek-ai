@@ -1,0 +1,122 @@
+version: '3.8'
+
+services:
+  # Ollama service for running LLMs locally
+  ollama:
+    image: ollama/ollama:latest
+    container_name: sweek-ai-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+      - ./models:/models
+    environment:
+      - OLLAMA_KEEP_ALIVE=24h
+      - OLLAMA_HOST=0.0.0.0
+    networks:
+      - sweek-network
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+        reservations:
+          memory: 8G
+
+  # Open WebUI service
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: sweek-ai-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./open-webui-data:/app/backend/data
+      - ./custom:/app/custom
+    environment:
+      - ENABLE_SIGNUP=true
+      - DEFAULT_MODELS=llama3.2:1b,llama3.1:8b,codellama:13b
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_NAME=Sweek-AI
+      - WEBUI_URL=http://localhost:3000
+      - WEBUI_SECRET_KEY=${WEBUI_SECRET_KEY:-sweek-ai-secret-key-change-in-production}
+      - ENABLE_COMMUNITY_SHARING=false
+      - ENABLE_MODEL_FILTER=true
+      - MODEL_FILTER_LIST=llama3.2:1b,llama3.1:8b,codellama:13b
+      - ENABLE_ADMIN_EXPORT=true
+      - ENABLE_ADMIN_CHAT_ACCESS=true
+    depends_on:
+      - ollama
+    networks:
+      - sweek-network
+    restart: unless-stopped
+
+  # PostgreSQL database for persistent storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: sweek-ai-postgres
+    environment:
+      - POSTGRES_DB=sweekdb
+      - POSTGRES_USER=sweekuser
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-sweek-postgres-password}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - sweek-network
+    restart: unless-stopped
+
+  # Redis for caching and sessions
+  redis:
+    image: redis:7-alpine
+    container_name: sweek-ai-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+    networks:
+      - sweek-network
+    restart: unless-stopped
+
+  # Nginx reverse proxy
+  nginx:
+    image: nginx:alpine
+    container_name: sweek-ai-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./nginx/sites-enabled:/etc/nginx/sites-enabled:ro
+    depends_on:
+      - open-webui
+    networks:
+      - sweek-network
+    restart: unless-stopped
+
+  # Model downloader service (runs once to download models)
+  model-setup:
+    build:
+      context: .
+      dockerfile: Dockerfile.models
+    container_name: sweek-ai-model-setup
+    volumes:
+      - ollama_data:/root/.ollama
+    depends_on:
+      - ollama
+    networks:
+      - sweek-network
+    profiles:
+      - setup
+
+networks:
+  sweek-network:
+    driver: bridge
+
+volumes:
+  ollama_data:
+  postgres_data:
+  redis_data:

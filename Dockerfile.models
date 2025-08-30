@@ -1,0 +1,21 @@
+# Dockerfile for downloading and setting up models
+FROM ollama/ollama:latest
+
+# Install curl and other utilities
+RUN apt-get update && apt-get install -y \
+    curl \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy model setup script
+COPY ./scripts/setup-models.sh /setup-models.sh
+RUN chmod +x /setup-models.sh
+
+# Copy character model configurations
+COPY ./models/model-config.json /model-config.json
+
+# Set working directory
+WORKDIR /
+
+# Run model setup
+ENTRYPOINT ["/setup-models.sh"]
