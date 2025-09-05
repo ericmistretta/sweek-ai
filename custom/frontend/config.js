@@ -46,7 +46,7 @@ export const config = {
   // Features
   features: {
     characterSwitcher: {
-      enabled: true,
+      enabled: false,  // Disabled - using native Ollama models instead
       position: 'top', // 'top', 'sidebar'
       showSearch: true,
       showCategories: true,

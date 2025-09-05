@@ -37,5 +37,15 @@
     });
     
     observer.observe(document.body, { childList: true, subtree: true });
+    
+    // First remove any old badge elements
+    const removeBadgeScript = document.createElement('script');
+    removeBadgeScript.src = '/static/custom/frontend/remove-badge-aggressive.js';
+    document.head.appendChild(removeBadgeScript);
+    
+    // Then load the More Characters link script
+    const script = document.createElement('script');
+    script.src = '/static/custom/frontend/add-characters-link-v2.js';
+    document.head.appendChild(script);
   });
 })();
