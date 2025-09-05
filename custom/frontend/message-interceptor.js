@@ -20,11 +20,39 @@
         return null;
     }
     
+    // Helper to build comprehensive character prompt with knowledge
+    function buildCharacterPrompt(character) {
+        let prompt = character.systemPrompt || '';
+        
+        // Add knowledge base if available
+        if (character.knowledge) {
+            prompt += '\n\nImportant facts about you:\n';
+            
+            Object.entries(character.knowledge).forEach(([key, value]) => {
+                // Format key to be more readable
+                const formattedKey = key.replace(/([A-Z])/g, ' $1').toLowerCase();
+                
+                if (Array.isArray(value)) {
+                    prompt += `- Your ${formattedKey}: ${value.join(', ')}\n`;
+                } else {
+                    prompt += `- Your ${formattedKey}: ${value}\n`;
+                }
+            });
+            
+            prompt += '\nWhen asked about yourself, your history, or your knowledge, respond accurately using this information. Always speak in first person and stay in character.';
+        }
+        
+        return prompt;
+    }
+    
     // Helper to inject character into messages
     function injectCharacterPrompt(messages, character) {
         if (!character || !character.systemPrompt) {
             return messages;
         }
+        
+        // Build comprehensive character prompt with knowledge
+        const characterPrompt = buildCharacterPrompt(character);
         
         // Check if we already have a system message
         const hasSystemMessage = messages.some(msg => msg.role === 'system');
@@ -33,16 +61,17 @@
             // Add character system prompt at the beginning
             messages.unshift({
                 role: 'system',
-                content: character.systemPrompt
+                content: characterPrompt
             });
         } else {
             // Prepend to existing system message
             const systemMsg = messages.find(msg => msg.role === 'system');
             if (systemMsg) {
-                systemMsg.content = character.systemPrompt + '\n\n' + systemMsg.content;
+                systemMsg.content = characterPrompt + '\n\n' + systemMsg.content;
             }
         }
         
+        console.log('[SweekAI] Character prompt injected with knowledge base');
         return messages;
     }
     
@@ -69,7 +98,13 @@
                     // Inject character prompt into messages
                     if (body.messages && Array.isArray(body.messages)) {
                         console.log('[SweekAI] Injecting character:', character.name);
+                        console.log('[SweekAI] Character has knowledge:', !!character.knowledge);
                         body.messages = injectCharacterPrompt(body.messages, character);
+                        
+                        // Log first message for debugging
+                        if (body.messages.length > 0 && body.messages[0].role === 'system') {
+                            console.log('[SweekAI] System prompt preview:', body.messages[0].content.substring(0, 200) + '...');
+                        }
                         
                         // Add character metadata
                         if (!body.metadata) {

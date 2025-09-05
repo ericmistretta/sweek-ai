@@ -81,11 +81,11 @@
     // Add integration styles
     function addIntegrationStyles() {
         const styles = `
-            /* Character Badge Styles */
+            /* Character Badge Styles - Updated Position */
             .sweek-character-badge {
-                position: fixed;
-                bottom: 20px;
-                right: 20px;
+                position: fixed !important;
+                top: 15px !important;
+                right: 350px !important;
                 display: flex;
                 align-items: center;
                 gap: 10px;
@@ -467,12 +467,16 @@
     // Load message interceptor script
     function loadMessageInterceptor() {
         const script = document.createElement('script');
-        script.src = '/static/custom/message-interceptor.js';
+        script.src = '/static/custom/frontend/message-interceptor.js';
         script.onload = () => {
             log('Message interceptor loaded successfully');
         };
         script.onerror = () => {
             console.error('[SweekAI] Failed to load message interceptor');
+            // Try alternative path
+            const altScript = document.createElement('script');
+            altScript.src = '/static/custom/message-interceptor.js';
+            document.head.appendChild(altScript);
         };
         document.head.appendChild(script);
     }
