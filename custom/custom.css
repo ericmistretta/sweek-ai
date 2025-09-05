@@ -1,0 +1,49 @@
+/* Sweek-AI Custom CSS Override */
+
+/* Hide Open WebUI logo and replace with custom */
+.app-logo img,
+img[alt="Open WebUI"],
+img[src*="favicon"],
+.brand-logo img {
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Add custom logo */
+.app-logo::after,
+.brand-logo::after {
+    content: url('/static/logos/sweek-ai-logo-dark.svg');
+    display: inline-block;
+    width: 120px;
+    height: 40px;
+}
+
+/* Override favicon */
+link[rel="icon"] {
+    href: '/static/logos/favicon.ico' !important;
+}
+
+/* Custom title */
+title::after {
+    content: 'Sweek-AI';
+}
+
+/* Force dark theme colors */
+:root {
+    --primary-color: #8FFF00;
+    --secondary-color: #7FE700;
+}
+
+/* Custom branding text replacement */
+.app-name:after {
+    content: 'Sweek-AI';
+    visibility: visible;
+    position: absolute;
+    left: 0;
+}
+
+.app-name {
+    visibility: hidden;
+    position: relative;
+}

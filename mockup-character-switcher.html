@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sweek-AI Character Switcher Mockup</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Main Container */
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #0a0a0a;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(150, 255, 0, 0.1);
+            border: 1px solid rgba(150, 255, 0, 0.2);
+        }
+
+        /* Header */
+        .app-header {
+            background: linear-gradient(135deg, #96ff00 0%, #00ff88 100%);
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: #000;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #96ff00;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        /* Character Quick Switch Bar */
+        .character-bar {
+            background: #1a1a1a;
+            border-bottom: 1px solid rgba(150, 255, 0, 0.1);
+            padding: 16px 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .current-character-display {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 10px 20px;
+            background: #0a0a0a;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .current-character-display:hover {
+            border-color: #96ff00;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(150, 255, 0, 0.2);
+        }
+
+        .character-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, #96ff00 0%, #00ff88 100%);
+        }
+
+        .character-info {
+            flex: 1;
+        }
+
+        .character-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: #fff;
+        }
+
+        .character-status {
+            font-size: 12px;
+            color: #888;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #96ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Character Selector Panel */
+        .character-selector-panel {
+            background: #0a0a0a;
+            padding: 24px 30px;
+        }
+
+        /* Search Bar */
+        .search-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 48px;
+            border: 2px solid rgba(150, 255, 0, 0.2);
+            background: #1a1a1a;
+            border-radius: 12px;
+            font-size: 15px;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .search-input::placeholder {
+            color: #666;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #96ff00;
+            box-shadow: 0 0 0 3px rgba(150, 255, 0, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #666;
+        }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+
+        .category-tab {
+            padding: 10px 20px;
+            background: #1a1a1a;
+            border: 1px solid rgba(150, 255, 0, 0.2);
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+            color: #888;
+        }
+
+        .category-tab:hover {
+            background: #2a2a2a;
+            color: #96ff00;
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, #96ff00 0%, #00ff88 100%);
+            color: #000;
+            font-weight: 600;
+            border-color: transparent;
+        }
+
+        /* Character Grid */
+        .character-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        /* Character Card */
+        .character-card {
+            background: #1a1a1a;
+            border: 2px solid rgba(150, 255, 0, 0.1);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .character-card:hover {
+            border-color: #96ff00;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(150, 255, 0, 0.2);
+            background: #222;
+        }
+
+        .character-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .character-avatar-large {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            background: linear-gradient(135deg, #96ff00 0%, #00ff88 100%);
+            position: relative;
+        }
+
+        .character-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: #000;
+            color: #96ff00;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            border: 2px solid #1a1a1a;
+        }
+
+        .favorite-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #444;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .favorite-btn:hover {
+            color: #fbbf24;
+            transform: scale(1.1);
+        }
+
+        .favorite-btn.active {
+            color: #fbbf24;
+        }
+
+        .character-details {
+            margin-bottom: 16px;
+        }
+
+        .character-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .character-tagline {
+            font-size: 14px;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        /* Personality Traits */
+        .personality-traits {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 16px 0;
+        }
+
+        .trait {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .trait-icon {
+            font-size: 16px;
+        }
+
+        .trait-info {
+            flex: 1;
+        }
+
+        .trait-name {
+            font-size: 11px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .trait-bar {
+            width: 100%;
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-top: 2px;
+            overflow: hidden;
+        }
+
+        .trait-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #96ff00 0%, #00ff88 100%);
+            border-radius: 2px;
+            transition: width 0.3s;
+        }
+
+        /* Character Stats */
+        .character-stats {
+            display: flex;
+            gap: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #333;
+            font-size: 13px;
+            color: #666;
+        }
+
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Select Button */
+        .select-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #96ff00 0%, #00ff88 100%);
+            border: none;
+            border-radius: 10px;
+            color: #000;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 16px;
+        }
+
+        .select-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(150, 255, 0, 0.3);
+        }
+
+        /* Header buttons */
+        .header-btn {
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.2);
+            border: 1px solid rgba(0,0,0,0.3);
+            border-radius: 8px;
+            cursor: pointer;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .nav-btn {
+            padding: 8px 16px;
+            background: #2a2a2a;
+            border: 1px solid rgba(150, 255, 0, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            color: #888;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: #333;
+            color: #96ff00;
+            border-color: #96ff00;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <div class="app-header">
+            <div class="logo">
+                <div class="logo-icon">SA</div>
+                <span>SweekAI</span>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <a href="mockup-nav-buttons.html" class="header-btn" style="text-decoration: none;">UI Components</a>
+                <button class="header-btn">Settings</button>
+                <button class="header-btn">Profile</button>
+            </div>
+        </div>
+
+        <!-- Character Quick Switch Bar -->
+        <div class="character-bar">
+            <div class="current-character-display">
+                <div class="character-avatar">🧑‍🔬</div>
+                <div class="character-info">
+                    <div class="character-name">Albert Einstein</div>
+                    <div class="character-status">
+                        <span class="status-dot"></span>
+                        <span>Ready to chat</span>
+                    </div>
+                </div>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="#666">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
+            </div>
+            <div style="display: flex; gap: 12px;">
+                <button class="nav-btn">New Chat</button>
+                <button class="nav-btn">History</button>
+            </div>
+        </div>
+
+        <!-- Character Selector Panel -->
+        <div class="character-selector-panel">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                </svg>
+                <input type="text" class="search-input" placeholder="Search characters by name, category, or personality...">
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs">
+                <button class="category-tab active">✨ All Characters</button>
+                <button class="category-tab">⭐ Favorites</button>
+                <button class="category-tab">🧑‍🔬 Scientists</button>
+                <button class="category-tab">🎮 Gaming</button>
+                <button class="category-tab">📚 Educational</button>
+                <button class="category-tab">🎭 Historical</button>
+                <button class="category-tab">✍️ Creative</button>
+            </div>
+
+            <!-- Character Grid -->
+            <div class="character-grid">
+                <!-- Einstein Card -->
+                <div class="character-card">
+                    <div class="character-card-header">
+                        <div class="character-avatar-large">
+                            🧑‍🔬
+                            <div class="character-badge">⚡</div>
+                        </div>
+                        <button class="favorite-btn active">★</button>
+                    </div>
+                    <div class="character-details">
+                        <div class="character-title">Albert Einstein</div>
+                        <div class="character-tagline">Theoretical physicist who revolutionized our understanding of space and time</div>
+                    </div>
+                    <div class="personality-traits">
+                        <div class="trait">
+                            <span class="trait-icon">🧠</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Genius</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">😊</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Friendly</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">🎯</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Focused</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">😄</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Humorous</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 70%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="character-stats">
+                        <span class="stat">💬 1.2k chats</span>
+                        <span class="stat">⭐ 4.9 rating</span>
+                        <span class="stat">🏆 Popular</span>
+                    </div>
+                    <button class="select-btn">Chat with Einstein</button>
+                </div>
+
+                <!-- Minecraft Steve Card -->
+                <div class="character-card">
+                    <div class="character-card-header">
+                        <div class="character-avatar-large">
+                            ⛏️
+                            <div class="character-badge">🎮</div>
+                        </div>
+                        <button class="favorite-btn">★</button>
+                    </div>
+                    <div class="character-details">
+                        <div class="character-title">Steve</div>
+                        <div class="character-tagline">Master builder from Minecraft, ready to craft and explore with you!</div>
+                    </div>
+                    <div class="personality-traits">
+                        <div class="trait">
+                            <span class="trait-icon">🎨</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Creative</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">⚡</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Energetic</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">🤝</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Helpful</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">🎮</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Playful</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="character-stats">
+                        <span class="stat">💬 856 chats</span>
+                        <span class="stat">⭐ 4.8 rating</span>
+                        <span class="stat">🔥 Trending</span>
+                    </div>
+                    <button class="select-btn">Chat with Steve</button>
+                </div>
+
+                <!-- Marie Curie Card -->
+                <div class="character-card">
+                    <div class="character-card-header">
+                        <div class="character-avatar-large">
+                            👩‍🔬
+                            <div class="character-badge">☢️</div>
+                        </div>
+                        <button class="favorite-btn">★</button>
+                    </div>
+                    <div class="character-details">
+                        <div class="character-title">Marie Curie</div>
+                        <div class="character-tagline">Pioneer in radioactivity, first woman to win a Nobel Prize</div>
+                    </div>
+                    <div class="personality-traits">
+                        <div class="trait">
+                            <span class="trait-icon">💪</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Determined</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 95%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">🔬</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Scientific</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 100%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">📚</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Scholarly</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="trait">
+                            <span class="trait-icon">🌟</span>
+                            <div class="trait-info">
+                                <div class="trait-name">Inspiring</div>
+                                <div class="trait-bar">
+                                    <div class="trait-fill" style="width: 85%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="character-stats">
+                        <span class="stat">💬 654 chats</span>
+                        <span class="stat">⭐ 4.9 rating</span>
+                        <span class="stat">🏅 Expert</span>
+                    </div>
+                    <button class="select-btn">Chat with Marie</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
