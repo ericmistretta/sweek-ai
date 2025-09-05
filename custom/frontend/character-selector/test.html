@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Selector Test - SweekAI</title>
+    <link rel="stylesheet" href="selector.css">
+    <style>
+        /* Additional styles for test page */
+        body {
+            padding: 20px;
+            background: #0a0a0a;
+        }
+        
+        .test-header {
+            max-width: 1400px;
+            margin: 0 auto 40px;
+            padding: 20px;
+            background: #1a1a1a;
+            border: 1px solid rgba(150, 255, 0, 0.2);
+            border-radius: 12px;
+        }
+        
+        .test-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #96ff00;
+            margin-bottom: 10px;
+        }
+        
+        .test-info {
+            color: #888;
+            line-height: 1.6;
+        }
+        
+        .test-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        
+        .test-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #96ff00, #00ff88);
+            border: none;
+            border-radius: 8px;
+            color: #0a0a0a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+        
+        .test-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .test-btn.secondary {
+            background: #2a2a2a;
+            color: #96ff00;
+            border: 2px solid #96ff00;
+        }
+        
+        .console-output {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #0f0f0f;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            color: #96ff00;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .console-line {
+            margin: 2px 0;
+            padding: 2px 0;
+        }
+        
+        .console-line.error {
+            color: #ff4444;
+        }
+        
+        .console-line.info {
+            color: #00aaff;
+        }
+    </style>
+</head>
+<body>
+    <!-- Test Page Header -->
+    <div class="test-header">
+        <h1 class="test-title">🧪 Character Selector Test Page</h1>
+        <div class="test-info">
+            Test the SweekAI character selector component. This page loads the character selector with sample data.<br>
+            Click "Select a Character" to open the selector panel.
+        </div>
+        <div class="test-actions">
+            <button class="test-btn" onclick="reloadPage()">🔄 Reload Page</button>
+            <button class="test-btn" onclick="clearStorage()">🗑️ Clear Storage</button>
+            <button class="test-btn secondary" onclick="toggleConsole()">📊 Toggle Console</button>
+            <button class="test-btn secondary" onclick="addTestCharacter()">➕ Add Test Character</button>
+        </div>
+    </div>
+
+    <!-- Character Selector Component -->
+    <div id="character-selector-container">
+        <!-- Current Character Display -->
+        <div class="current-character-bar">
+            <div class="current-character-display" id="currentCharacterDisplay">
+                <div class="character-avatar-small">
+                    <span id="currentAvatar">🤖</span>
+                </div>
+                <div class="character-info">
+                    <div class="character-name" id="currentName">Select a Character</div>
+                    <div class="character-status">
+                        <span class="status-dot"></span>
+                        <span id="currentStatus">Ready to chat</span>
+                    </div>
+                </div>
+                <svg class="dropdown-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Character Selector Panel (Initially Hidden) -->
+        <div class="character-selector-panel" id="characterPanel" style="display: none;">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                </svg>
+                <input type="text" 
+                       class="search-input" 
+                       id="characterSearch"
+                       placeholder="Search characters by name or category..."
+                       autocomplete="off">
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+                <button class="category-tab active" data-category="all">
+                    <span class="tab-icon">✨</span>
+                    <span class="tab-text">All</span>
+                </button>
+                <button class="category-tab" data-category="favorites">
+                    <span class="tab-icon">⭐</span>
+                    <span class="tab-text">Favorites</span>
+                </button>
+                <button class="category-tab" data-category="Scientists & Thinkers">
+                    <span class="tab-icon">🧑‍🔬</span>
+                    <span class="tab-text">Scientists</span>
+                </button>
+                <button class="category-tab" data-category="Gaming Characters">
+                    <span class="tab-icon">🎮</span>
+                    <span class="tab-text">Gaming</span>
+                </button>
+                <button class="category-tab" data-category="Educational Assistants">
+                    <span class="tab-icon">📚</span>
+                    <span class="tab-text">Educational</span>
+                </button>
+                <button class="category-tab" data-category="Historical Figures">
+                    <span class="tab-icon">🎭</span>
+                    <span class="tab-text">Historical</span>
+                </button>
+                <button class="category-tab" data-category="Creative Characters">
+                    <span class="tab-icon">✍️</span>
+                    <span class="tab-text">Creative</span>
+                </button>
+            </div>
+
+            <!-- Character Grid -->
+            <div class="character-grid" id="characterGrid">
+                <!-- Characters will be dynamically inserted here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">🔍</div>
+                <div class="no-results-text">No characters found</div>
+                <div class="no-results-hint">Try adjusting your search or filters</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Console Output -->
+    <div class="console-output" id="consoleOutput" style="display: none;">
+        <div class="console-line info">Console initialized...</div>
+    </div>
+
+    <!-- Character Card Template -->
+    <template id="characterCardTemplate">
+        <div class="character-card" data-character-id="">
+            <div class="character-card-header">
+                <div class="character-avatar-large">
+                    <span class="avatar-emoji"></span>
+                    <div class="character-badge"></div>
+                </div>
+                <button class="favorite-btn" aria-label="Toggle favorite">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="character-details">
+                <h3 class="character-title"></h3>
+                <p class="character-description"></p>
+            </div>
+
+            <div class="personality-traits">
+                <!-- Traits will be inserted here -->
+            </div>
+
+            <div class="character-quirks">
+                <!-- Quirks will be inserted here -->
+            </div>
+
+            <div class="character-stats">
+                <span class="stat">
+                    <span class="stat-icon">💬</span>
+                    <span class="stat-value">0</span>
+                </span>
+                <span class="stat">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value">New</span>
+                </span>
+            </div>
+
+            <button class="select-btn">
+                <span>Chat with </span><span class="select-btn-name"></span>
+            </button>
+        </div>
+    </template>
+
+    <!-- Trait Bar Template -->
+    <template id="traitBarTemplate">
+        <div class="trait">
+            <span class="trait-icon"></span>
+            <div class="trait-info">
+                <div class="trait-name"></div>
+                <div class="trait-bar">
+                    <div class="trait-fill"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Test Page Scripts -->
+    <script>
+        // Console logging
+        const originalLog = console.log;
+        const originalError = console.error;
+        const consoleOutput = document.getElementById('consoleOutput');
+        
+        function addConsoleLog(message, type = 'info') {
+            const line = document.createElement('div');
+            line.className = `console-line ${type}`;
+            line.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            consoleOutput.appendChild(line);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        console.log = function(...args) {
+            originalLog.apply(console, args);
+            addConsoleLog(args.join(' '), 'info');
+        };
+        
+        console.error = function(...args) {
+            originalError.apply(console, args);
+            addConsoleLog(args.join(' '), 'error');
+        };
+        
+        // Test functions
+        function reloadPage() {
+            location.reload();
+        }
+        
+        function clearStorage() {
+            localStorage.removeItem('sweek-favorites');
+            localStorage.removeItem('sweek-current-character');
+            console.log('Storage cleared');
+            location.reload();
+        }
+        
+        function toggleConsole() {
+            const console = document.getElementById('consoleOutput');
+            console.style.display = console.style.display === 'none' ? 'block' : 'none';
+        }
+        
+        function addTestCharacter() {
+            if (window.characterSelector) {
+                const testChar = {
+                    id: 'test-' + Date.now(),
+                    name: 'Test Character ' + Math.floor(Math.random() * 100),
+                    category: 'Testing',
+                    avatar: '🧪',
+                    description: 'A dynamically added test character',
+                    personality: {
+                        traits: {
+                            testing: 1.0,
+                            debugging: 0.9,
+                            patience: 0.8,
+                            humor: 0.7
+                        },
+                        quirks: ['Loves testing', 'Finds bugs', 'Never sleeps'],
+                        catchphrases: ['Testing, testing, 1-2-3!']
+                    }
+                };
+                
+                window.characterSelector.characters.push(testChar);
+                window.characterSelector.renderCharacters();
+                console.log('Added test character:', testChar.name);
+            }
+        }
+        
+        // Listen for character selection events
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'character-selected') {
+                console.log('Character selected:', event.data.character.name);
+            }
+        });
+    </script>
+
+    <!-- Load Character Selector JavaScript -->
+    <script src="selector.js"></script>
+</body>
+</html>

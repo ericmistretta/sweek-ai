@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweekAI Character Selector</title>
+    <link rel="stylesheet" href="selector.css">
+</head>
+<body>
+    <div id="character-selector-container">
+        <!-- Current Character Display -->
+        <div class="current-character-bar">
+            <div class="current-character-display" id="currentCharacterDisplay">
+                <div class="character-avatar-small">
+                    <span id="currentAvatar">🤖</span>
+                </div>
+                <div class="character-info">
+                    <div class="character-name" id="currentName">Select a Character</div>
+                    <div class="character-status">
+                        <span class="status-dot"></span>
+                        <span id="currentStatus">Ready to chat</span>
+                    </div>
+                </div>
+                <svg class="dropdown-arrow" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" />
+                </svg>
+            </div>
+        </div>
+
+        <!-- Character Selector Panel -->
+        <div class="character-selector-panel" id="characterPanel">
+            <!-- Search Bar -->
+            <div class="search-container">
+                <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                </svg>
+                <input type="text" 
+                       class="search-input" 
+                       id="characterSearch"
+                       placeholder="Search characters by name or category..."
+                       autocomplete="off">
+            </div>
+
+            <!-- Category Tabs -->
+            <div class="category-tabs" id="categoryTabs">
+                <button class="category-tab active" data-category="all">
+                    <span class="tab-icon">✨</span>
+                    <span class="tab-text">All</span>
+                </button>
+                <button class="category-tab" data-category="favorites">
+                    <span class="tab-icon">⭐</span>
+                    <span class="tab-text">Favorites</span>
+                </button>
+                <button class="category-tab" data-category="Scientists & Thinkers">
+                    <span class="tab-icon">🧑‍🔬</span>
+                    <span class="tab-text">Scientists</span>
+                </button>
+                <button class="category-tab" data-category="Gaming Characters">
+                    <span class="tab-icon">🎮</span>
+                    <span class="tab-text">Gaming</span>
+                </button>
+                <button class="category-tab" data-category="Educational Assistants">
+                    <span class="tab-icon">📚</span>
+                    <span class="tab-text">Educational</span>
+                </button>
+                <button class="category-tab" data-category="Historical Figures">
+                    <span class="tab-icon">🎭</span>
+                    <span class="tab-text">Historical</span>
+                </button>
+                <button class="category-tab" data-category="Creative Characters">
+                    <span class="tab-icon">✍️</span>
+                    <span class="tab-text">Creative</span>
+                </button>
+            </div>
+
+            <!-- Character Grid -->
+            <div class="character-grid" id="characterGrid">
+                <!-- Characters will be dynamically inserted here -->
+            </div>
+
+            <!-- No Results Message -->
+            <div class="no-results" id="noResults" style="display: none;">
+                <div class="no-results-icon">🔍</div>
+                <div class="no-results-text">No characters found</div>
+                <div class="no-results-hint">Try adjusting your search or filters</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Character Card Template -->
+    <template id="characterCardTemplate">
+        <div class="character-card" data-character-id="">
+            <div class="character-card-header">
+                <div class="character-avatar-large">
+                    <span class="avatar-emoji"></span>
+                    <div class="character-badge"></div>
+                </div>
+                <button class="favorite-btn" aria-label="Toggle favorite">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="character-details">
+                <h3 class="character-title"></h3>
+                <p class="character-description"></p>
+            </div>
+
+            <div class="personality-traits">
+                <!-- Traits will be inserted here -->
+            </div>
+
+            <div class="character-quirks">
+                <!-- Quirks will be inserted here -->
+            </div>
+
+            <div class="character-stats">
+                <span class="stat">
+                    <span class="stat-icon">💬</span>
+                    <span class="stat-value">0</span>
+                </span>
+                <span class="stat">
+                    <span class="stat-icon">⭐</span>
+                    <span class="stat-value">New</span>
+                </span>
+            </div>
+
+            <button class="select-btn">
+                <span>Chat with </span><span class="select-btn-name"></span>
+            </button>
+        </div>
+    </template>
+
+    <!-- Trait Bar Template -->
+    <template id="traitBarTemplate">
+        <div class="trait">
+            <span class="trait-icon"></span>
+            <div class="trait-info">
+                <div class="trait-name"></div>
+                <div class="trait-bar">
+                    <div class="trait-fill"></div>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Load JavaScript -->
+    <script src="selector.js"></script>
+</body>
+</html>
