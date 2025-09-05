@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SweekAI Character Models Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a, #1a1a1a);
+            min-height: 100vh;
+            color: white;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #96ff00, #00ff88);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 50px;
+            font-size: 18px;
+        }
+        
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+        
+        .model-card {
+            background: #1a1a1a;
+            border: 2px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .model-card:hover {
+            transform: translateY(-5px);
+            border-color: #96ff00;
+            box-shadow: 0 20px 40px rgba(150, 255, 0, 0.1);
+        }
+        
+        .model-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .model-avatar {
+            font-size: 64px;
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #96ff00, #00ff88);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .model-info h2 {
+            color: #96ff00;
+            margin-bottom: 5px;
+        }
+        
+        .model-name {
+            color: #666;
+            font-family: monospace;
+            font-size: 14px;
+        }
+        
+        .model-description {
+            color: #aaa;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .model-details {
+            background: rgba(150, 255, 0, 0.05);
+            border-left: 3px solid #96ff00;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        
+        .model-details h3 {
+            color: #96ff00;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        
+        .detail-item {
+            color: #888;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+        
+        .status {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .status.installed {
+            background: rgba(150, 255, 0, 0.2);
+            color: #96ff00;
+            border: 1px solid #96ff00;
+        }
+        
+        .status.not-installed {
+            background: rgba(255, 100, 100, 0.1);
+            color: #ff6464;
+            border: 1px solid #ff6464;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #96ff00, #00ff88);
+            color: #0a0a0a;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(150, 255, 0, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #2a2a2a;
+            color: #96ff00;
+            border: 2px solid #96ff00;
+        }
+        
+        .btn-secondary:hover {
+            background: rgba(150, 255, 0, 0.1);
+        }
+        
+        .instructions {
+            background: #1a1a1a;
+            border: 2px solid #2a2a2a;
+            border-radius: 20px;
+            padding: 30px;
+            margin-top: 50px;
+        }
+        
+        .instructions h2 {
+            color: #96ff00;
+            margin-bottom: 20px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+            color: #aaa;
+            line-height: 2;
+        }
+        
+        .instructions code {
+            background: rgba(150, 255, 0, 0.1);
+            color: #96ff00;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Character Models Gallery</h1>
+        <p class="subtitle">Choose your AI personality from our collection of character models</p>
+        
+        <div class="models-grid">
+            <!-- Einstein Card -->
+            <div class="model-card">
+                <div class="model-header">
+                    <div class="model-avatar">🧑‍🔬</div>
+                    <div class="model-info">
+                        <h2>Albert Einstein</h2>
+                        <div class="model-name">einstein:latest</div>
+                    </div>
+                </div>
+                
+                <div class="status installed" id="einstein-status">✅ Installed</div>
+                
+                <p class="model-description">
+                    The renowned theoretical physicist who developed the theory of relativity. 
+                    Explains complex concepts through thought experiments and analogies.
+                </p>
+                
+                <div class="model-details">
+                    <h3>Character Traits</h3>
+                    <div class="detail-item">📅 Born: March 14, 1879</div>
+                    <div class="detail-item">🏆 Nobel Prize in Physics (1921)</div>
+                    <div class="detail-item">💡 Famous for: E=mc²</div>
+                    <div class="detail-item">🎻 Plays violin</div>
+                </div>
+                
+                <div class="actions">
+                    <a href="http://localhost:3000" class="btn btn-primary">Use in Chat</a>
+                    <button class="btn btn-secondary" onclick="testModel('einstein:latest')">Test</button>
+                </div>
+            </div>
+            
+            <!-- Steve Card -->
+            <div class="model-card">
+                <div class="model-header">
+                    <div class="model-avatar">⛏️</div>
+                    <div class="model-info">
+                        <h2>Steve (Minecraft)</h2>
+                        <div class="model-name">steve-minecraft:latest</div>
+                    </div>
+                </div>
+                
+                <div class="status installed" id="steve-status">✅ Installed</div>
+                
+                <p class="model-description">
+                    The iconic protagonist from Minecraft. Expert in mining, crafting, and building. 
+                    Enthusiastic about creating and exploring blocky worlds.
+                </p>
+                
+                <div class="model-details">
+                    <h3>Character Traits</h3>
+                    <div class="detail-item">🎮 Game: Minecraft</div>
+                    <div class="detail-item">👨‍💻 Creator: Markus Persson (Notch)</div>
+                    <div class="detail-item">⚒️ Skills: Mining, Crafting, Building</div>
+                    <div class="detail-item">🌍 Worlds: Overworld, Nether, End</div>
+                </div>
+                
+                <div class="actions">
+                    <a href="http://localhost:3000" class="btn btn-primary">Use in Chat</a>
+                    <button class="btn btn-secondary" onclick="testModel('steve-minecraft:latest')">Test</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="instructions">
+            <h2>📚 How to Use Character Models</h2>
+            <ol>
+                <li>Click <strong>"Use in Chat"</strong> to open OpenWebUI</li>
+                <li>In the model dropdown, select:
+                    <ul>
+                        <li><code>einstein:latest</code> for Albert Einstein</li>
+                        <li><code>steve-minecraft:latest</code> for Steve</li>
+                    </ul>
+                </li>
+                <li>Start chatting! The model will respond in character</li>
+            </ol>
+            
+            <h2 style="margin-top: 30px;">🧪 Test Questions</h2>
+            <p style="color: #aaa; margin-top: 10px;">Try these questions to verify the character:</p>
+            <ul style="margin-left: 20px; color: #888; line-height: 2;">
+                <li>"What is your name?"</li>
+                <li>"Tell me about yourself"</li>
+                <li>"What are you famous for?"</li>
+            </ul>
+            
+            <h2 style="margin-top: 30px;">🛠️ Manual Installation</h2>
+            <p style="color: #aaa; margin-top: 10px;">If models are not installed, run:</p>
+            <pre style="background: #0a0a0a; padding: 15px; border-radius: 10px; margin-top: 10px;">
+<code>cd /path/to/sweek-ai/models/characters
+./setup-character-models.sh</code>
+            </pre>
+        </div>
+    </div>
+    
+    <script>
+        // Check if models are actually installed
+        async function checkModelStatus() {
+            try {
+                const response = await fetch('http://localhost:11434/api/tags');
+                const data = await response.json();
+                const models = data.models || [];
+                
+                const einsteinInstalled = models.some(m => m.name.includes('einstein'));
+                const steveInstalled = models.some(m => m.name.includes('steve-minecraft'));
+                
+                document.getElementById('einstein-status').className = einsteinInstalled ? 'status installed' : 'status not-installed';
+                document.getElementById('einstein-status').textContent = einsteinInstalled ? '✅ Installed' : '❌ Not Installed';
+                
+                document.getElementById('steve-status').className = steveInstalled ? 'status installed' : 'status not-installed';
+                document.getElementById('steve-status').textContent = steveInstalled ? '✅ Installed' : '❌ Not Installed';
+            } catch (error) {
+                console.error('Could not check model status:', error);
+            }
+        }
+        
+        // Test model in console
+        function testModel(modelName) {
+            const testPrompt = "What is your name?";
+            console.log(`Testing ${modelName} with: "${testPrompt}"`);
+            alert(`To test ${modelName}:\n\n1. Open terminal\n2. Run: ollama run ${modelName}\n3. Type: ${testPrompt}`);
+        }
+        
+        // Check status on load
+        checkModelStatus();
+    </script>
+</body>
+</html>
